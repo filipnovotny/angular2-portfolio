@@ -1,0 +1,8 @@
+.modal {
+    text-align:center;
+}
+.modal-dialog {
+    display: flex;
+    width: auto;
+}
+

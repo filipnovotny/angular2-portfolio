@@ -1,0 +1,95 @@
+import 'rxjs/add/operator/map';
+
+export class PictureBase {
+	private static counter: number = 0;
+
+	public id: number = null;
+
+	public label: string;
+	public name: string;
+
+	public width: number;
+	public height: number;
+
+	public path: string;
+
+	public getSizeDifference(width : number, height?: number) : number{
+		return Math.abs(width-this.width)+(height?Math.abs(height-this.height):0);
+	}
+
+	public getLabel() : string {
+		return this.label;
+	}
+
+	public getId(){
+		return this.id;
+	}
+
+	public constructor(json?: PictureBase) {
+		this.id = PictureBase.counter;
+		this.label = json.label;
+		this.name = json.name;
+		this.width = json.width;
+		this.height = json.height;
+		this.path = json.path;
+		var self = this;
+		if(!this.width || !this.height){
+			
+			if(!this.width || !this.height){
+				var img  = new Image();
+				img.onload = function() {
+  					self.width = this.width;
+  					self.height = this.height;
+				}
+				img.src = this.path;
+			}
+			
+		}
+		PictureBase.counter++;	
+	}
+}
+
+export class Thumbnail extends PictureBase {
+	public thumbname : string;
+	public thumbsizecategory: number;
+
+	public constructor(json?: Thumbnail) {
+		super(json);
+		this.thumbname = json.thumbname;
+		this.thumbsizecategory = json.thumbsizecategory;
+	}
+}
+
+export class Picture extends PictureBase {
+	public thumbs : Thumbnail[];
+
+	public previous: Picture;
+	public next: Picture;
+
+	public getClosestThumbBySize(width: number, height?: number) : Thumbnail {
+		var best_thumb : Thumbnail = this.thumbs[0];
+
+		for(let thumb of this.thumbs){
+			var difference = thumb.getSizeDifference(width, height);
+			var best_difference = best_thumb.getSizeDifference(width, height);
+			if(difference<best_difference)
+				best_thumb = thumb;
+		}
+		return best_thumb;
+	}
+
+	public constructor(json?: Picture) {
+		super(json);
+		this.thumbs = json.thumbs.map
+                                  (
+                                    (elt : Thumbnail) => {
+                                          var thumb = new Thumbnail(elt);
+                                          thumb.label = thumb.label?thumb.label:this.label;
+                                          thumb.name = thumb.label?thumb.label:this.name;
+                                          thumb.id = this.id;
+                                          return thumb;
+                                       }
+                                  );
+	}
+}
+
