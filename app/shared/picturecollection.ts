@@ -73,7 +73,7 @@ export class PictureCollection implements IterableIterator<Picture> {
     
   }
 
-  private getTempCollection() : Picture[]{
+  public getTempCollection() : Picture[]{
     return this.collection;
   }
 
