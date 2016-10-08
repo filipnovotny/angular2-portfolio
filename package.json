@@ -29,6 +29,8 @@
     "@angular/router":  "~3.0.1",
     "@angular/upgrade":  "~2.0.1",
 
+    "underscore" : "*",
+
     "angular2-modal" : "*",
 
     "angular-in-memory-web-api": "~0.1.1",

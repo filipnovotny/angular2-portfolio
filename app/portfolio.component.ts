@@ -38,7 +38,10 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 	public getPictures() : void {
 		this.image_service.getPictures().subscribe(
 								pictures => 
-									this.pictures = pictures,
+									pictures.getCollection().subscribe(
+										pictures =>
+											this.pictures = pictures
+									),
                                 err => {
                                     console.log(err);
                                 });

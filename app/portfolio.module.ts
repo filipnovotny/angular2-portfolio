@@ -13,7 +13,7 @@ import { PortfolioItemComponent }  from './portfolioitem/portfolioitem.component
 import { PictureModalComponent } from './picturemodal/picturemodal.component';
 
 export const PORTFOLIO_DI_CONFIG: AppConfig = {
-  url: '/janela/picturesconfig/',
+  url: '/img/images.json',
   title: 'Portfolio configuration'
 };
 

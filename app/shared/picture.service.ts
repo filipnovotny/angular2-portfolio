@@ -8,25 +8,29 @@ import 'rxjs/add/operator/catch';
 
 import {Observable} from 'rxjs/Rx';
 
-
 import { Picture } from './picture';
+import { PictureCollection, PictureWithParent } from './picturecollection';
+
 
 @Injectable()
 export class PictureService {
   private picturesUrl : string;
+  private collection: PictureCollection;
   constructor(private http: Http,@Inject(APP_CONFIG) config: AppConfig) { 
     this.picturesUrl  = config.url;
   }
 
-  getPictures(): Observable<Picture[]> {
+  getPictures(): Observable<PictureCollection> {
         return this.http.get(this.picturesUrl)
                         // ...and calling .json() on the response to return data
                          .map(
-                               (res:Response) : Picture[] => {
-                                 var pics : Picture[] = res.json().data.map
+                               (res:Response) : PictureCollection => {
+                                 var pics : Picture[];
+                                 var pcl = new PictureCollection(pics);
+                                 pics = res.json().data.map
                                   (
                                     (elt : Picture) : Picture => 
-                                          new Picture(elt)
+                                          new PictureWithParent(elt,pcl)
                                        
                                   );
                                   for(let idx in pics){
@@ -35,7 +39,8 @@ export class PictureService {
                                     pics[idx].next = pics[(_idx+1+pics.length)%pics.length];
 
                                   }
-                                  return pics;
+                                  pcl.setPictures(pics);
+                                  return pcl;
                                }
                             )
                          //...errors if any

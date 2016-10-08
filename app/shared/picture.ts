@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/map';
 
-export class PictureBase {
+export abstract class PictureBase {
 	private static counter: number = 0;
 
 	public id: number = null;
@@ -12,6 +12,8 @@ export class PictureBase {
 	public height: number;
 
 	public path: string;
+
+	public abstract picLoaded(pic: PictureBase) : void;
 
 	public getSizeDifference(width : number, height?: number) : number{
 		return Math.abs(width-this.width)+(height?Math.abs(height-this.height):0);
@@ -40,16 +42,19 @@ export class PictureBase {
 				img.onload = function() {
   					self.width = this.width;
   					self.height = this.height;
+  					self.picLoaded(self);
 				}
 				img.src = this.path;
 			}
 			
+		}else{
+			self.picLoaded(self);	
 		}
 		PictureBase.counter++;	
 	}
 }
 
-export class Thumbnail extends PictureBase {
+export abstract class Thumbnail extends PictureBase {
 	public thumbname : string;
 	public thumbsizecategory: number;
 
@@ -60,11 +65,13 @@ export class Thumbnail extends PictureBase {
 	}
 }
 
-export class Picture extends PictureBase {
+export abstract class Picture extends PictureBase {
 	public thumbs : Thumbnail[];
 
 	public previous: Picture;
 	public next: Picture;
+
+	public abstract createThumbnail(json: Thumbnail) : Thumbnail;
 
 	public getClosestThumbBySize(width: number, height?: number) : Thumbnail {
 		var best_thumb : Thumbnail = this.thumbs[0];
@@ -80,10 +87,14 @@ export class Picture extends PictureBase {
 
 	public constructor(json?: Picture) {
 		super(json);
+		
+	}
+
+	public createThumbs(json?: Picture) : void{
 		this.thumbs = json.thumbs.map
                                   (
                                     (elt : Thumbnail) => {
-                                          var thumb = new Thumbnail(elt);
+                                          var thumb = this.createThumbnail(elt);
                                           thumb.label = thumb.label?thumb.label:this.label;
                                           thumb.name = thumb.label?thumb.label:this.name;
                                           thumb.id = this.id;
