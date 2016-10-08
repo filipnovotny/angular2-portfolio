@@ -77,7 +77,7 @@
         opacity: 0.1;
     }
 }
-/*
+
 :host-context(.modal-dialog) {
     display: flex;
     width: auto;
@@ -86,4 +86,3 @@
 :host-context(.modal) {
     text-align:center;
 }
-*/

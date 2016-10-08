@@ -30,8 +30,10 @@ export class PictureService {
                                        
                                   );
                                   for(let idx in pics){
-                                    pics[<number><any>idx].previous = pics[(<number><any>idx-1+pics.length)%pics.length];
-                                    pics[<number><any>idx].next = pics[(<number><any>idx+1+pics.length)%pics.length];
+                                    var _idx = parseInt(idx);
+                                    pics[idx].previous = pics[(_idx-1+pics.length)%pics.length];
+                                    pics[idx].next = pics[(_idx+1+pics.length)%pics.length];
+
                                   }
                                   return pics;
                                }

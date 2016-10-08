@@ -43,7 +43,7 @@ export class PortfolioItemComponent implements OnInit {
 			picture: this.picture,
 			showClose : true,
 			isBlocking : false,
-			size : 'md'
+			size : 'sm'
 		}, PictureModalContext));
   }
 }

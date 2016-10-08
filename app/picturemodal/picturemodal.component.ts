@@ -3,7 +3,7 @@ import { Component, HostListener } from '@angular/core';
 import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
-import {Picture} from '../shared/picture';
+import {Picture,Thumbnail} from '../shared/picture';
 
 export class PictureModalContext extends BSModalContext {
   public picture: Picture;
@@ -28,6 +28,16 @@ export class PictureModalComponent implements ModalComponent<PictureModalContext
   onKeyUp(keycode: number) {
     keycode === 37 && this.prevPicture(); //left arrow
     keycode === 39 && this.nextPicture(); //right arrow
+  }
+
+  get selectedthumb() : Thumbnail{
+    var w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('body')[0],
+    x = w.innerWidth || e.clientWidth || g.clientWidth,
+    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+    return this.context.picture.getClosestThumbBySize(x,y);
   }
 
   nextPicture(){
