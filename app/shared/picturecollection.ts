@@ -10,6 +10,9 @@ export class PictureBaseWithParent extends PictureBase {
   public picLoaded() : void {
     this.collection.picLoaded(this);
   }
+  public picError() : void {
+    this.collection.picError(this);
+  }
 }
 
 export class ThumbnailWithParent extends Thumbnail {
@@ -18,6 +21,9 @@ export class ThumbnailWithParent extends Thumbnail {
   }
   public picLoaded() : void {
     this.collection.picLoaded(this);
+  }
+  public picError() : void {
+    this.collection.picError(this);
   }
 }
 
@@ -28,6 +34,9 @@ export class PictureWithParent extends Picture {
   }
   public picLoaded() : void {
     this.collection.picLoaded(this);
+  }
+  public picError() : void {
+    this.collection.picError(this);
   }
 
   public createThumbnail(json: Thumbnail) : Thumbnail {
@@ -64,14 +73,26 @@ export class PictureCollection implements IterableIterator<Picture> {
     
   }
 
-  public picLoaded(pic: PictureBase){
-    this.nbLoaded++;
-    console.log("Pic is loaded",this.nbLoaded,pic);
+  private reorderCollection() : void{
     if(this.nbLoaded>=this.maxLoaded){
-      this.collection = _(this.collection).sortBy('width');
-      this.observer.next(this.collection);
+      var processedCollection = _(this.collection).without(_(this.collection).findWhere({faulty: true}));
+      var processedCollection = _(processedCollection).sortBy(pic => pic.width/pic.height);
+      this.observer.next(processedCollection);
       this.observer.complete();
     }
+  }
+
+  public picLoaded(pic: PictureBase) : void{
+    this.nbLoaded++;
+    console.log("Pic is loaded",this.nbLoaded,pic);
+    this.reorderCollection();
+  }
+
+  public picError(pic: PictureBase) : void{
+    this.nbLoaded++;
+    pic.faulty = true;
+    console.log("Error loading pic",this.nbLoaded,pic);
+    this.reorderCollection();
   }
 
   public next(): IteratorResult<Picture> {

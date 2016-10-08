@@ -30,6 +30,7 @@
     "@angular/upgrade":  "~2.0.1",
 
     "underscore" : "*",
+    "exif-js" : "*",
 
     "angular2-modal" : "*",
 
