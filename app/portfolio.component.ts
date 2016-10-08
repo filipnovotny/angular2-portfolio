@@ -17,12 +17,13 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 	private nb_elements_per_row: number = 4;
 	private margin : number = 10;
 	private borderweight : number = 4;
+	private status: string;
 
 	private element_width: number;
 	private element_height: number;
 
 	constructor(private image_service: PictureService,private el: ElementRef){
-		
+		this.status="Chargement des images...";
 	}
 
 	public ngAfterViewInit() : void {	
@@ -39,6 +40,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 		this.image_service.getPictures().subscribe(
 								pictures => {
 									this.pictures = pictures.getTempCollection();
+									this.status="Mise en page des images...";
 									return pictures.getCollection().subscribe(
 										pictures =>
 											this.pictures = pictures
