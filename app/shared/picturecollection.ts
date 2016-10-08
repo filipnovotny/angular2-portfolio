@@ -73,6 +73,10 @@ export class PictureCollection implements IterableIterator<Picture> {
     
   }
 
+  private getTempCollection() : Picture[]{
+    return this.collection;
+  }
+
   private reorderCollection() : void{
     if(this.nbLoaded>=this.maxLoaded){
       var processedCollection = _(this.collection).without(_(this.collection).findWhere({faulty: true}));
