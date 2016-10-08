@@ -42,8 +42,10 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 									this.pictures = pictures.getTempCollection();
 									this.status="Mise en page des images...";
 									return pictures.getCollection().subscribe(
-										pictures =>
+										pictures => {
+											this.status="Terminé.";
 											this.pictures = pictures
+										}
 									)
 								}
 									,
