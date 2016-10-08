@@ -1,7 +1,11 @@
 import 'rxjs/add/operator/map';
 
+declare var EXIF:any;
+
 export abstract class PictureBase {
 	private static counter: number = 0;
+
+	public faulty:boolean = false;
 
 	public id: number = null;
 
@@ -14,6 +18,7 @@ export abstract class PictureBase {
 	public path: string;
 
 	public abstract picLoaded(pic: PictureBase) : void;
+	public abstract picError(pic: PictureBase) : void;
 
 	public getSizeDifference(width : number, height?: number) : number{
 		return Math.abs(width-this.width)+(height?Math.abs(height-this.height):0);
@@ -39,10 +44,24 @@ export abstract class PictureBase {
 			
 			if(!this.width || !this.height){
 				var img  = new Image();
-				img.onload = function() {
-  					self.width = this.width;
-  					self.height = this.height;
-  					self.picLoaded(self);
+				
+				img.onload = function() {  					
+					//!!!!!WARNING: there is no error handler in this function
+					//we could end up not loading our pictures if this function fails
+				    EXIF.getData(img, function() {
+				        var orientation: number = EXIF.getTag(this, "Orientation");
+				        if(orientation>4){ //take into account exif rotations, if necessary
+				        	self.width = this.height;
+  							self.height = this.width;
+				        }else{
+				        	self.width = this.width;
+  							self.height = this.height;
+				        }
+				        self.picLoaded(self);
+				    });				    
+				}
+				img.onerror = function(){
+					self.picError(self);
 				}
 				img.src = this.path;
 			}
