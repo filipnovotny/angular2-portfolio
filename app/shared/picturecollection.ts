@@ -79,8 +79,11 @@ export class PictureCollection implements IterableIterator<Picture> {
 
   private reorderCollection() : void{
     if(this.nbLoaded>=this.maxLoaded){
+      console.log("all pics loaded:",this.nbLoaded,this.maxLoaded)
       var processedCollection = _(this.collection).without(_(this.collection).findWhere({faulty: true}));
       var processedCollection = _(processedCollection).sortBy(pic => pic.width/pic.height);
+      console.log(this.collection);
+      console.log(processedCollection);
       this.observer.next(processedCollection);
       this.observer.complete();
     }
@@ -117,7 +120,6 @@ export class PictureCollection implements IterableIterator<Picture> {
     for(var pic of pics){
       this.maxLoaded+=(pic.thumbs.length+1);
     }
-    this.maxLoaded--;
     console.log("max pics are set to ",this.maxLoaded);
   }
 
