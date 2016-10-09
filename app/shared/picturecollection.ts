@@ -4,7 +4,7 @@ import * as _ from "underscore";
 
 
 export class PictureBaseWithParent extends PictureBase {
-  triggerloaded: boolean = false;
+  triggerloaded: boolean;
   constructor(json?:PictureBase, private collection?: PictureCollection) {
     super(json);
     if(this.triggerloaded){
@@ -24,7 +24,7 @@ export class PictureBaseWithParent extends PictureBase {
 }
 
 export class ThumbnailWithParent extends Thumbnail {
-  triggerloaded: boolean = false;
+  triggerloaded: boolean ;
   constructor(json?:Thumbnail, private collection?: PictureCollection) {
     super(json);
     if(this.triggerloaded){
@@ -45,7 +45,7 @@ export class ThumbnailWithParent extends Thumbnail {
 }
 
 export class PictureWithParent extends Picture {
-  triggerloaded: boolean = false;
+  triggerloaded: boolean;
   constructor(json?:Picture, private collection?: PictureCollection) {
     super(json);
     if(this.triggerloaded){
@@ -78,9 +78,13 @@ export class PictureCollection implements IterableIterator<Picture> {
   private nbLoaded :number= 0;
   private maxLoaded: number =0;
   private observer: Observer<Picture[]>;
+  private observable: Observable<Picture[]>;
   
   constructor(private collection: Picture[]) {
-
+    this.observable = Observable.create(observer => {      
+      this.observer = observer;
+      this.reorderCollection();
+    });
   }
 
   public get length(): number {
@@ -93,9 +97,7 @@ export class PictureCollection implements IterableIterator<Picture> {
   }
 
   public getCollection() : Observable<Picture[]>{
-    return Observable.create(observer => {      
-      this.observer = observer;      
-    });
+    return this.observable;
     
   }
 
@@ -110,8 +112,10 @@ export class PictureCollection implements IterableIterator<Picture> {
       var processedCollection = _(processedCollection).sortBy(pic => pic.width/pic.height);
       console.log(this.collection);
       console.log(processedCollection);
-      this.observer.next(processedCollection);
-      this.observer.complete();
+      if(this.observer){
+        this.observer.next(processedCollection);
+        this.observer.complete();  
+      }      
     }
   }
 
@@ -147,6 +151,7 @@ export class PictureCollection implements IterableIterator<Picture> {
       this.maxLoaded+=(pic.thumbs.length+1);
     }
     console.log("max pics are set to ",this.maxLoaded);
+    this.reorderCollection()
   }
 
   [Symbol.iterator](): IterableIterator<Picture> {
