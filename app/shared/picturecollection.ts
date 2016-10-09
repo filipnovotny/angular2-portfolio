@@ -4,11 +4,19 @@ import * as _ from "underscore";
 
 
 export class PictureBaseWithParent extends PictureBase {
+  triggerloaded: boolean = false;
   constructor(json?:PictureBase, private collection?: PictureCollection) {
     super(json);
+    if(this.triggerloaded){
+      this.collection.picLoaded(this);
+      this.triggerloaded = false;
+    }
   }
   public picLoaded() : void {
-    this.collection.picLoaded(this);
+    if(this.collection)
+      this.collection.picLoaded(this);
+    else
+      this.triggerloaded = true;
   }
   public picError() : void {
     this.collection.picError(this);
@@ -16,11 +24,20 @@ export class PictureBaseWithParent extends PictureBase {
 }
 
 export class ThumbnailWithParent extends Thumbnail {
+  triggerloaded: boolean = false;
   constructor(json?:Thumbnail, private collection?: PictureCollection) {
     super(json);
+    if(this.triggerloaded){
+      this.collection.picLoaded(this);
+      this.triggerloaded = false;
+    }
   }
+  
   public picLoaded() : void {
-    this.collection.picLoaded(this);
+    if(this.collection)
+      this.collection.picLoaded(this);
+    else
+      this.triggerloaded = true;
   }
   public picError() : void {
     this.collection.picError(this);
@@ -28,12 +45,21 @@ export class ThumbnailWithParent extends Thumbnail {
 }
 
 export class PictureWithParent extends Picture {
+  triggerloaded: boolean = false;
   constructor(json?:Picture, private collection?: PictureCollection) {
     super(json);
+    if(this.triggerloaded){
+      this.collection.picLoaded(this);
+      this.triggerloaded = false;
+    }
+
     super.createThumbs(json);
   }
   public picLoaded() : void {
-    this.collection.picLoaded(this);
+    if(this.collection)
+      this.collection.picLoaded(this);
+    else
+      this.triggerloaded = true;
   }
   public picError() : void {
     this.collection.picError(this);
@@ -78,7 +104,7 @@ export class PictureCollection implements IterableIterator<Picture> {
   }
 
   private reorderCollection() : void{
-    if(this.nbLoaded>=this.maxLoaded){
+    if(this.collection && this.nbLoaded>=this.maxLoaded){
       console.log("all pics loaded:",this.nbLoaded,this.maxLoaded)
       var processedCollection = _(this.collection).without(_(this.collection).findWhere({faulty: true}));
       var processedCollection = _(processedCollection).sortBy(pic => pic.width/pic.height);
