@@ -1,6 +1,6 @@
 import 'rxjs/add/operator/map';
-
-declare var EXIF:any;
+//import {EXIF} from "exif-js/exif";
+var EXIF = require("exif-js/exif");
 
 export abstract class PictureBase {
 	private static counter: number = 0;
