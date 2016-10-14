@@ -47,7 +47,8 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-*.js
+app/*/*.js
+app/*.js
 *.map
 
 node_modules
