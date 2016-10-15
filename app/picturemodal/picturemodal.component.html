@@ -9,7 +9,7 @@
             <h3 *ngSwitchDefault class="modal-title">{{context.title}}</h3>
         </div>
     </div>
-    <div class="row" >
+    <div class="row" [ngClass]="{'myclass' : shouldUseMyClass}">
         <div class="img-container">
             <a href="{{context.picture.path}}" class="img-responsive" target="_blank">
             <img src="{{selectedthumb.path}}" class="img-responsive"/>

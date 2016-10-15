@@ -1,4 +1,4 @@
-import { Component, OnInit , AfterViewInit, ElementRef, Inject } from '@angular/core';
+import { Component, OnInit , AfterViewInit, ElementRef, Inject, Input } from '@angular/core';
 import { PictureService } from './shared/picture.service'
 import { Picture } from './shared/picture'
 
@@ -8,9 +8,14 @@ import { Picture } from './shared/picture'
     selector: 'portfolio',
     templateUrl: 'portfolio.component.html',
     styleUrls: ['portfolio.component.css'],
+    //TODO: [ngClass] here on purpose, no real use, just to show how to workaround ng2 issue #4330.
+  // Remove when solved.
+  /* tslint:disable */
     providers: [PictureService]
 })
 export class PortfolioComponent implements OnInit, AfterViewInit  { 
+	@Input() url: string;
+
 	private pictures : Picture[];
 	private width : number;
 	private height: number;
@@ -21,6 +26,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 
 	private element_width: number;
 	private element_height: number;
+
+	public shouldUseMyClass: boolean;
 
 	constructor(private image_service: PictureService,private el: ElementRef){
 		this.status="Chargement des images...";
@@ -55,6 +62,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 	}
 
 	public ngOnInit(): void {
+		if(this.url)
+			this.image_service.setUrl(this.url);
 		this.getPictures();
 	}
 }

@@ -20,6 +20,10 @@ export class PictureService {
     this.picturesUrl  = config.url;
   }
 
+  public setUrl(url: string) : void{
+    this.picturesUrl = url;
+  }
+
   getPictures(): Observable<PictureCollection> {
         return this.http.get(this.picturesUrl)
                         // ...and calling .json() on the response to return data

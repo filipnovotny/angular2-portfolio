@@ -4,6 +4,8 @@ import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 
 import {Picture,Thumbnail} from '../shared/picture';
+import { NgClass } from '@angular/common';
+
 
 export class PictureModalContext extends BSModalContext {
   public picture: Picture;
@@ -19,6 +21,7 @@ export class PictureModalContext extends BSModalContext {
 })
 export class PictureModalComponent implements ModalComponent<PictureModalContext> {
   context: PictureModalContext;
+  public shouldUseMyClass: boolean;
 
   constructor(public dialog: DialogRef<PictureModalContext>) {
     this.context = dialog.context;
