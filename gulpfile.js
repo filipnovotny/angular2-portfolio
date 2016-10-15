@@ -11,8 +11,22 @@ var inlineNg2Styles = require('gulp-inline-ng2-styles');
 var ng2RelativePath = require('gulp-ng2-relative-path');
 var rename = require("gulp-rename");
 var del = require('del');
+var util = require('gulp-util');
 
 /////////////////////////////////////////////////////////////////////////////////////
+
+//write phony css so that angular's styleUrls dont scream
+if(util.env.rootfs){
+  console.log("creating file " + util.env.rootfs +'phony.css' + " for angular2's buggy styles");
+  var fs = require('fs');
+  fs.writeFile(util.env.rootfs +'phony.css', " ", function(err) {
+      if(err) {
+          return console.log(err);
+      }
+  }); 
+
+}else console.log("you did not specify a --rootfs parameter, if you don't want to, then create manually a phony.css file in your static root");
+
 
 "use strict";
 var compile = require('es6-templates').compile;
@@ -110,7 +124,7 @@ function replace(styleUrls, options) {
   newLines += hasTraillingComa(styleUrls) ? ',' : '';
   styles = styles.replace(/(?:\r\n|\r|\n)/g, '');
   
-  return 'styleUrls: ["."],'+ STYLES + ': [' + styles + ']';
+  return 'styleUrls: ["'+ (util.env.root?util.env.root:"/static/") +'phony.css"],'+ STYLES + ': [' + styles + ']';
 }
 
 function getStylesString(stylesPath, options) {
@@ -150,7 +164,7 @@ gulp.task('build-sjs', ['dupplicate_css_structure', 'dupplicate_tpl_structure', 
 })
 
 gulp.task('clean',['dupplicate_css_structure', 'dupplicate_tpl_structure', 'compile_ts', 'build-sjs'], function(cb) {
-    return del(['dist/**/*.js','dist/**/*.html', '!dist/portfolio.umd.js'], cb);
+    return del(['dist/**/*.js','dist/**/*.html','dist/**/*.css', '!dist/portfolio.umd.js'], cb);
 });
 
 gulp.task("dupplicate_css_structure", function () {
