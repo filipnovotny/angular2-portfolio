@@ -15,19 +15,6 @@ var util = require('gulp-util');
 
 /////////////////////////////////////////////////////////////////////////////////////
 
-//write phony css so that angular's styleUrls dont scream
-if(util.env.rootfs){
-  console.log("creating file " + util.env.rootfs +'phony.css' + " for angular2's buggy styles");
-  var fs = require('fs');
-  fs.writeFile(util.env.rootfs +'phony.css', " ", function(err) {
-      if(err) {
-          return console.log(err);
-      }
-  }); 
-
-}else console.log("you did not specify a --rootfs parameter, if you don't want to, then create manually a phony.css file in your static root");
-
-
 "use strict";
 var compile = require('es6-templates').compile;
 var extend = require('extend');
@@ -124,7 +111,7 @@ function replace(styleUrls, options) {
   newLines += hasTraillingComa(styleUrls) ? ',' : '';
   styles = styles.replace(/(?:\r\n|\r|\n)/g, '');
   
-  return 'styleUrls: ["'+ (util.env.root?util.env.root:"/static/") +'phony.css"],'+ STYLES + ': [' + styles + ']';
+  return STYLES + ': [' + styles + ']';
 }
 
 function getStylesString(stylesPath, options) {
@@ -155,8 +142,8 @@ gulp.task('build-sjs', ['dupplicate_css_structure', 'dupplicate_tpl_structure', 
     builder.loadConfigSync('./systemjs.config.release.js');
  
     return builder.buildStatic('dist/main.release.js', {
-        minify: false,
-        mangle: false,
+        minify: true,
+        mangle: true,
         globalName: 'PORTFOLIO' 
     })
     .pipe(rename("portfolio.umd.js"))
