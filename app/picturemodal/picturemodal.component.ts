@@ -60,7 +60,7 @@ export class PictureModalComponent implements ModalComponent<PictureModalContext
     return false;
   }
 
-  onLoad() {
+  onLoad() : void {
       this.loading = false;
   }
 }

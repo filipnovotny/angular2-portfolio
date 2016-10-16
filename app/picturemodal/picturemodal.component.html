@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="row" [ngClass]="{'myclass' : shouldUseMyClass}">
-        <div class="img-container">
+        <div class="img-container" (swipeleft)="nextPicture()" (swiperight)="prevPicture()">
             <a href="{{context.picture.path}}" class="img-responsive" target="_blank">            
             <div *ngIf="loading" [style.width.px]="selectedthumb.width" [style.height.px]="selectedthumb.height">
                 <div class="loading">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <img [hidden]="loading" (load)="onLoad()" src="{{selectedthumb.path}}" class="img-responsive"/>
+            <img [hidden]="loading" (load)="onLoad()" src="{{selectedthumb.path}}" class="img-responsive" />
             </a>
             <a class="left-align-overlay hideme" href="#" (click)="prevPicture()">
                 <i class="fa fa-chevron-left fa-5x"></i>
