@@ -22,6 +22,7 @@ export class PictureModalContext extends BSModalContext {
 export class PictureModalComponent implements ModalComponent<PictureModalContext> {
   context: PictureModalContext;
   public shouldUseMyClass: boolean;
+  loading: boolean = true;
 
   constructor(public dialog: DialogRef<PictureModalContext>) {
     this.context = dialog.context;
@@ -57,5 +58,9 @@ export class PictureModalComponent implements ModalComponent<PictureModalContext
 
   beforeClose(): boolean {
     return false;
+  }
+
+  onLoad() {
+      this.loading = false;
   }
 }

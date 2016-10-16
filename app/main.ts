@@ -9,7 +9,7 @@ export var PORTFOLIO_DI_CONFIG: AppConfig = {
   title: 'Portfolio configuration'
 };
 
-if(PORTFOLIO_url)
+if(typeof PORTFOLIO_url !== 'undefined')
 	PORTFOLIO_DI_CONFIG.url = PORTFOLIO_url;
 
 platformBrowserDynamic([{ provide: APP_CONFIG, useValue: PORTFOLIO_DI_CONFIG }]).bootstrapModule(PortfolioModule);	

@@ -54,8 +54,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 											this.pictures = pictures
 										}
 									)
-								}
-									,
+								},
                                 err => {
                                     console.log(err);
                                 });

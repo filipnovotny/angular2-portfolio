@@ -12,6 +12,8 @@ var ng2RelativePath = require('gulp-ng2-relative-path');
 var rename = require("gulp-rename");
 var del = require('del');
 var util = require('gulp-util');
+var stripDebug = require('gulp-strip-debug');
+
 
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -182,6 +184,7 @@ gulp.task("compile_ts",['dupplicate_css_structure', 'dupplicate_tpl_structure'],
     	.pipe(inlineStyles({ base: './', target: 'es6' }))
         .pipe(tsProject())
         .js
+        .pipe(stripDebug())
         //.pipe(gp_concat('main.js'))
         .pipe(gulp.dest("dist"));
 });
