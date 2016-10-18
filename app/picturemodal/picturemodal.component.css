@@ -30,6 +30,18 @@
     animation-fill-mode: forwards;
 }
 
+.center-align-overlay {
+  position: absolute;
+  text-align:center;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+  opacity: 0;
+}
+
+.center-align-overlay:hover {
+  opacity: 100;
+}
+
 .left-align-overlay {
   position: absolute;
   text-align:left;

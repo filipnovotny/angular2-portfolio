@@ -45,10 +45,12 @@ export class PictureModalComponent implements ModalComponent<PictureModalContext
   }
 
   nextPicture(){
+    this.loading = true;
     this.context.picture = this.context.picture.next; 
   }
 
   prevPicture(){
+    this.loading = true;
     this.context.picture = this.context.picture.previous; 
   }
 

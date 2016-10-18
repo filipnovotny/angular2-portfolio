@@ -11,7 +11,6 @@
     </div>
     <div class="row" [ngClass]="{'myclass' : shouldUseMyClass}">
         <div class="img-container" (swipeleft)="nextPicture()" (swiperight)="prevPicture()">
-            <a href="{{context.picture.path}}" class="img-responsive" target="_blank">            
             <div *ngIf="loading" [style.width.px]="selectedthumb.width" [style.height.px]="selectedthumb.height">
                 <div class="loading">
                     <div class="sk-cube-grid">
@@ -28,12 +27,14 @@
                 </div>
             </div>
             <img [hidden]="loading" (load)="onLoad()" src="{{selectedthumb.path}}" class="img-responsive" />
-            </a>
             <a class="left-align-overlay hideme" href="#" (click)="prevPicture()">
                 <i class="fa fa-chevron-left fa-5x"></i>
             </a>
             <a class="right-align-overlay hideme" href="#" (click)="nextPicture()">
                 <i class="fa fa-chevron-right fa-5x"></i>
+            </a>
+            <a href="{{context.picture.path}}" class="center-align-overlay" target="_blank">
+                <i class="fa fa-expand fa-5x" aria-hidden="true"></i>
             </a>
             <div>{{context.picture.label}}</div>
         </div>
