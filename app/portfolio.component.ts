@@ -34,10 +34,15 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 	}
 
 	public ngAfterViewInit() : void {	
-			
-        var sizeCheckInterval = setInterval(() => {
+		
+        var sizeCheckInterval = setInterval(() => {        	
         	this.height = this.el.nativeElement.getBoundingClientRect().height;
         	this.width = this.el.nativeElement.getBoundingClientRect().width;
+
+        	if(this.width < 640)
+ 				this.nb_elements_per_row=2;
+ 			else
+ 				this.nb_elements_per_row=4;
 
         	this.element_width = (this.width)/this.nb_elements_per_row -2*(this.margin+this.borderweight);
         });        
