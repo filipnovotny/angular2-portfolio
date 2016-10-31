@@ -16,16 +16,35 @@ import { PictureCollection, PictureWithParent } from './picturecollection';
 export class PictureService {
   private picturesUrl : string;
   private collection: PictureCollection;
+  private resolved_collection: boolean = false;
+  private ppics: Picture[];
+  private obs_collection: Observable<PictureCollection> = null;
+  private obs_collection_onetime: Observable<PictureCollection> = null;
   constructor(private http: Http,@Inject(APP_CONFIG) config: AppConfig) { 
     this.picturesUrl  = config.url;
+
+    this.obs_collection_onetime = Observable.create(observer => {
+        if(this.resolved_collection){
+          observer.next(this.collection);
+          observer.complete();
+        }else{
+          this.obs_collection.subscribe(collection => {
+            this.resolved_collection = true;
+            this.collection = collection;
+            observer.next(collection);
+            observer.complete();
+          });  
+        }
+           
+      });
   }
 
   public setUrl(url: string) : void{
     this.picturesUrl = url;
   }
 
-  getPictures(): Observable<PictureCollection> {
-        return this.http.get(this.picturesUrl)
+  private retrievePictures() : void{
+    this.obs_collection = this.http.get(this.picturesUrl)
                         // ...and calling .json() on the response to return data
                          .map(
                                (res:Response) : PictureCollection => {
@@ -44,11 +63,35 @@ export class PictureService {
 
                                   }
                                   pcl.setPictures(pics);
+                                  this.ppics = pics;
                                   return pcl;
                                }
                             )
                          //...errors if any
                          .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
 
+
+  }
+
+  getOrderedPictures() : Observable<Picture[]> {
+    return null;
+  }
+
+  getPicture(id: number) : Observable<Picture> {
+    var observable = Observable.create(observer => {      
+        this.obs_collection_onetime.subscribe(collection => {
+          var picture = _(collection.getTempCollection()).find(o => o.id==id);
+          observer.next(picture);
+          observer.complete();
+        }
+      ); 
+    });
+    return observable;
+  }
+
+  getPictures(): Observable<PictureCollection> {
+    if(!this.obs_collection)
+      this.retrievePictures();
+    return this.obs_collection_onetime;
   }
 }

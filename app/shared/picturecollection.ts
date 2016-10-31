@@ -66,7 +66,7 @@ export class PictureWithParent extends Picture {
   }
 
   public createThumbnail(json: Thumbnail) : Thumbnail {
-    console.log("creating thumbnail on this with ", this, "with", this.collection);
+    //console.log("creating thumbnail on this with ", this, "with", this.collection);
     return new ThumbnailWithParent(json, this.collection);
   }  
 }
@@ -80,11 +80,12 @@ export class PictureCollection implements IterableIterator<Picture> {
   private observer: Observer<Picture[]>;
   private observable: Observable<Picture[]>;
   
-  constructor(private collection: Picture[]) {
+  constructor(public collection: Picture[]) {
     this.observable = Observable.create(observer => {      
-      this.observer = observer;
-      this.reorderCollection();
+      this.observer = observer;   
+      this.reorderCollection();   
     });
+
   }
 
   public get length(): number {
@@ -110,8 +111,8 @@ export class PictureCollection implements IterableIterator<Picture> {
       console.log("all pics loaded:",this.nbLoaded,this.maxLoaded)
       var processedCollection = _(this.collection).without(_(this.collection).findWhere({faulty: true}));
       var processedCollection = _(processedCollection).sortBy(pic => pic.width/pic.height);
-      console.log(this.collection);
-      console.log(processedCollection);
+      //console.log(this.collection);
+      //console.log(processedCollection);
       if(this.observer){
         this.observer.next(processedCollection);
         this.observer.complete();  
@@ -121,7 +122,7 @@ export class PictureCollection implements IterableIterator<Picture> {
 
   public picLoaded(pic: PictureBase) : void{
     this.nbLoaded++;
-    console.log("Pic is loaded",this.nbLoaded,pic);
+    //console.log("Pic is loaded",this.nbLoaded,pic);
     this.reorderCollection();
   }
 

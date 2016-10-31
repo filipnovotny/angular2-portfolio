@@ -41,7 +41,7 @@ export class PortfolioItemComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		
+		console.log(this.picture);
 	}
 
 	onClick() {

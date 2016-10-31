@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnDestroy } from '@angular/core';
 
 import { DialogRef, ModalComponent } from 'angular2-modal';
 import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
@@ -6,6 +6,7 @@ import { BSModalContext } from 'angular2-modal/plugins/bootstrap';
 import {Picture,Thumbnail} from '../shared/picture';
 import { NgClass } from '@angular/common';
 
+import { Router }   from '@angular/router';
 
 export class PictureModalContext extends BSModalContext {
   public picture: Picture;
@@ -19,14 +20,18 @@ export class PictureModalContext extends BSModalContext {
   // Remove when solved.
   /* tslint:disable */ templateUrl: 'picturemodal.component.html'
 })
-export class PictureModalComponent implements ModalComponent<PictureModalContext> {
+export class PictureModalComponent implements ModalComponent<PictureModalContext>, OnDestroy {
   context: PictureModalContext;
   public shouldUseMyClass: boolean;
   loading: boolean = true;
 
-  constructor(public dialog: DialogRef<PictureModalContext>) {
+  constructor(public dialog: DialogRef<PictureModalContext>, private router: Router) {
     this.context = dialog.context;
+
   }
+
+  
+
 
   @HostListener('window:keydown', ['$event.keyCode'])
   onKeyUp(keycode: number) {
@@ -45,13 +50,15 @@ export class PictureModalComponent implements ModalComponent<PictureModalContext
   }
 
   nextPicture(){
-    this.loading = true;
-    this.context.picture = this.context.picture.next; 
+    //this.loading = true;
+    //this.context.picture = this.context.picture.next; 
+    this.router.navigate(['/gallery/modal', this.context.picture.next.id]);
   }
 
   prevPicture(){
-    this.loading = true;
-    this.context.picture = this.context.picture.previous; 
+    //this.loading = true;
+    //this.context.picture = this.context.picture.previous; 
+    this.router.navigate(['/gallery/modal', this.context.picture.previous.id]);
   }
 
   beforeDismiss(): boolean {
@@ -64,5 +71,9 @@ export class PictureModalComponent implements ModalComponent<PictureModalContext
 
   onLoad() : void {
       this.loading = false;
+  }
+
+  ngOnDestroy() : void {
+
   }
 }

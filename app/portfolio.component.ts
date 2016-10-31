@@ -1,6 +1,7 @@
 import { Component, OnInit , AfterViewInit, ElementRef, Inject, Input } from '@angular/core';
 import { PictureService } from './shared/picture.service'
 import { Picture } from './shared/picture'
+import { RouterModule }   from '@angular/router';
 
 
 @Component({

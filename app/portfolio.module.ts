@@ -6,9 +6,13 @@ import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 
 import { PortfolioComponent }  from './portfolio.component';
+import { GalleryComponent }  from './gallery/gallery.component';
 import { PortfolioItemComponent }  from './portfolioitem/portfolioitem.component';
+import { ModalWrapperComponent } from './modalwrapper/modalwrapper.component';
 
 import { PictureModalComponent } from './picturemodal/picturemodal.component';
+
+import { RouterModule }   from '@angular/router';
 
 
 
@@ -17,11 +21,30 @@ import { PictureModalComponent } from './picturemodal/picturemodal.component';
   	BrowserModule, 
   	HttpModule, 
   	ModalModule.forRoot(),
-    BootstrapModalModule
-  	],
-  declarations: [ PortfolioComponent,PortfolioItemComponent, PictureModalComponent ],
-  bootstrap: [ PortfolioComponent ],
 
-  entryComponents: [ PictureModalComponent ]
+    BootstrapModalModule,
+    RouterModule.forRoot(
+	    	[
+		    	{ 
+		    		path: '', 
+		    		pathMatch: 'full', 
+		    		redirectTo: '/gallery'
+		    	},
+		    	{ 
+		    		path: 'gallery', 
+		    		component: GalleryComponent,
+		    		children:
+		    			[
+		    				{ path: '', pathMatch: 'full' },
+			    			{ path: 'modal/:id', component: ModalWrapperComponent }
+		    			]
+		    	}
+			]
+		)
+	],
+	declarations: [ PortfolioComponent, GalleryComponent, ModalWrapperComponent, PortfolioItemComponent, PictureModalComponent ],
+	bootstrap: [ PortfolioComponent ],
+	
+	entryComponents: [ PictureModalComponent ]
 })
 export class PortfolioModule { }

@@ -1,6 +1,7 @@
 <div class="floating-box">
 	<div [ngClass]="{'myclass' : shouldUseMyClass}">
-		<img src="{{selectedthumb.path}}" width="{{elementwidth}}" (click)="onClick()"/>
+		<a [routerLink]="['/gallery/modal', picture.id]">
+			<img src="{{selectedthumb.path}}" width="{{elementwidth}}"/>
+		</a>
 	</div>
-	
 </div>
