@@ -1,0 +1,8 @@
+Statut: {{status}}
+<div class="portfoliozone" id="mainportfoliozone" [ngClass]="{'myclass' : shouldUseMyClass}">
+<portfolio-item *ngFor="let picture of pictures"
+    				[picture]="picture" [elementwidth]="element_width"
+    				>
+</portfolio-item>
+</div>
+<router-outlet></router-outlet>
