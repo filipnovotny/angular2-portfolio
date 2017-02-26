@@ -1,8 +1,8 @@
 import { Component, OnInit , AfterViewInit, ElementRef, Inject, Input } from '@angular/core';
 import { PictureService } from './shared/picture.service'
 import { Picture } from './shared/picture'
-import { RouterModule,Router }   from '@angular/router';
-
+import { RouterModule,Router ,ActivatedRoute}   from '@angular/router';
+import { AppConfig, APP_CONFIG } from './shared/config.service';
 
 @Component({
 	moduleId: module.id,
@@ -19,6 +19,7 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 	@Input() url: string;
 	
 	private galleries: string[];
+	private cur_gallery: string;
 
 	private pictures : Picture[];
 	private width : number;
@@ -33,10 +34,14 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 
 	public shouldUseMyClass: boolean;
 
-	constructor(private image_service: PictureService,private router:Router,private el: ElementRef){
+	constructor(private image_service: PictureService,
+				@Inject(APP_CONFIG) config: AppConfig,
+				private router:Router,private route: ActivatedRoute,
+				private el: ElementRef){
 		this.status="Chargement des images...";
 
 		this.galleries = JSON.parse(el.nativeElement.getAttribute('galleries'));
+		this.cur_gallery = config.default_gallery;
 	}
 
 	public ngAfterViewInit() : void {	
@@ -76,6 +81,11 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 			this.image_service.setUrl(this.url);
 		if(this.galleries)
 			console.log("found galleries:" + this.galleries);
+	}
+
+	public getTabClass(gallery) : string {
+		this.cur_gallery = this.router.url.split("/")[2];
+		return this.cur_gallery==gallery?"active":"inactive";
 	}
 
 }

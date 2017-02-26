@@ -2,7 +2,9 @@
     
 }
 
+
 .portfolio-gallery {
-	.margin-right: 5px;
-	.border-right: 2px;
+	margin-right: 5px;
+	border-right-style: solid;
+
 }

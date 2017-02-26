@@ -1,8 +1,10 @@
-Catégories: 
-<a *ngFor="let gallery of galleries" [routerLink]="['/gallery', gallery]">
-	<span class="portfolio-gallery">{{gallery}}</span> &nbsp;/&nbsp;
-</a>
-
+<ul class="nav nav-tabs">
+  <li *ngFor="let gallery of galleries" role="presentation" [class]="getTabClass(gallery)">
+  	<a [routerLink]="['/gallery', gallery]">
+		{{gallery}}
+	</a>
+  </li>
+</ul>
 
 <router-outlet></router-outlet>
 

@@ -14,6 +14,10 @@ import { PictureModalComponent } from './picturemodal/picturemodal.component';
 
 import { RouterModule }   from '@angular/router';
 
+declare var PORTFOLIO_default_gallery : string;
+
+if(typeof PORTFOLIO_default_gallery == 'undefined')
+	PORTFOLIO_default_gallery = 'default';
 
 
 @NgModule({
@@ -28,7 +32,7 @@ import { RouterModule }   from '@angular/router';
 		    	{ 
 		    		path: '', 
 		    		pathMatch: 'full', 
-		    		redirectTo: '/gallery/default'
+		    		redirectTo: '/gallery/'+PORTFOLIO_default_gallery
 		    	},
 		    	{ 
 		    		path: 'gallery/:galleryid', 

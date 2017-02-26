@@ -42,7 +42,14 @@ export class PictureService {
   }
 
   public setUrl(url: string) : void{
-    this.picturesUrl = this.basePicturesUrl+url+this.imageExtention;
+    var new_url:string = this.basePicturesUrl+url+this.imageExtention;
+    if(this.picturesUrl && this.picturesUrl != new_url){
+      this.picturesUrl = new_url
+      this.resolved_collection = false;
+      this.retrievePictures();
+    }
+    else
+      this.picturesUrl = new_url;
   }
 
   private retrievePictures() : void{
