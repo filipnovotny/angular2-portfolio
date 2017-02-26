@@ -1,7 +1,7 @@
 import { Component, OnInit , AfterViewInit, ElementRef, Inject, Input } from '@angular/core';
 import { PictureService } from './shared/picture.service'
 import { Picture } from './shared/picture'
-import { RouterModule }   from '@angular/router';
+import { RouterModule,Router }   from '@angular/router';
 
 
 @Component({
@@ -13,9 +13,12 @@ import { RouterModule }   from '@angular/router';
   // Remove when solved.
   /* tslint:disable */
     providers: [PictureService]
+
 })
 export class PortfolioComponent implements OnInit, AfterViewInit  { 
 	@Input() url: string;
+	
+	private galleries: string[];
 
 	private pictures : Picture[];
 	private width : number;
@@ -30,8 +33,10 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 
 	public shouldUseMyClass: boolean;
 
-	constructor(private image_service: PictureService,private el: ElementRef){
+	constructor(private image_service: PictureService,private router:Router,private el: ElementRef){
 		this.status="Chargement des images...";
+
+		this.galleries = JSON.parse(el.nativeElement.getAttribute('galleries'));
 	}
 
 	public ngAfterViewInit() : void {	
@@ -69,6 +74,8 @@ export class PortfolioComponent implements OnInit, AfterViewInit  {
 	public ngOnInit(): void {
 		if(this.url)
 			this.image_service.setUrl(this.url);
-		this.getPictures();
+		if(this.galleries)
+			console.log("found galleries:" + this.galleries);
 	}
+
 }

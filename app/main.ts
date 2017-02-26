@@ -5,7 +5,7 @@ import { APP_CONFIG, AppConfig }  from './shared/config.service';
 
 declare var PORTFOLIO_url : string;
 export var PORTFOLIO_DI_CONFIG: AppConfig = {
-  url: '/img/images.json',
+  url: '/img/',
   title: 'Portfolio configuration'
 };
 

@@ -28,10 +28,15 @@ import { RouterModule }   from '@angular/router';
 		    	{ 
 		    		path: '', 
 		    		pathMatch: 'full', 
-		    		redirectTo: '/gallery'
+		    		redirectTo: '/gallery/default'
 		    	},
 		    	{ 
-		    		path: 'gallery', 
+		    		path: 'gallery/:galleryid', 
+		    		component: GalleryComponent,
+		    		pathMatch: 'full'
+		    	},
+		    	{ 
+		    		path: 'gallery/:galleryid', 
 		    		component: GalleryComponent,
 		    		children:
 		    			[

@@ -52,13 +52,13 @@ export class PictureModalComponent implements ModalComponent<PictureModalContext
   nextPicture(){
     //this.loading = true;
     //this.context.picture = this.context.picture.next; 
-    this.router.navigate(['/gallery/modal', this.context.picture.next.id]);
+    this.router.navigate(['modal', this.context.picture.next.id]);
   }
 
   prevPicture(){
     //this.loading = true;
     //this.context.picture = this.context.picture.previous; 
-    this.router.navigate(['/gallery/modal', this.context.picture.previous.id]);
+    this.router.navigate(['modal', this.context.picture.previous.id]);
   }
 
   beforeDismiss(): boolean {

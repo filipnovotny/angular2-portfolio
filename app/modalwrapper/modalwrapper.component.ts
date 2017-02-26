@@ -51,7 +51,8 @@ export class ModalWrapperComponent implements OnDestroy {
 										this.currentDialog = dialog;
 										this.currentDialog.onDestroy.subscribe(() => {
 											if((p as any).id == this.previousId){
-												this.router.navigate(['/gallery']);
+												var gallery: string = this.router.url.split("/")[2];
+												this.router.navigate(['/gallery',gallery]);
 											}
 										});
 									}

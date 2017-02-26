@@ -1,1 +1,9 @@
+Catégories: 
+<a *ngFor="let gallery of galleries" [routerLink]="['/gallery', gallery]">
+	<span class="portfolio-gallery">{{gallery}}</span> &nbsp;/&nbsp;
+</a>
+
+
 <router-outlet></router-outlet>
+
+

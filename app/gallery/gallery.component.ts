@@ -12,7 +12,7 @@ import { RouterModule, ActivatedRoute }   from '@angular/router';
   // Remove when solved.
   /* tslint:disable */
 })
-export class GalleryComponent implements OnInit, AfterViewInit  { 
+export class GalleryComponent implements AfterViewInit  { 
 	@Input() url: string;
 
 	private pictures : Picture[];
@@ -30,6 +30,18 @@ export class GalleryComponent implements OnInit, AfterViewInit  {
 
 	constructor(private image_service: PictureService,private el: ElementRef,private route: ActivatedRoute){
 		this.status="Chargement des images...";
+
+		route.params.subscribe
+		(
+			p => 
+				{
+					var galleryid:string = (p as any).galleryid;
+					console.log("gallery changed to " + galleryid);
+
+					image_service.setUrl(galleryid);
+					this.getPictures();
+				}
+		);
 	}
 
 	public ngAfterViewInit() : void {	
@@ -64,9 +76,4 @@ export class GalleryComponent implements OnInit, AfterViewInit  {
                                 });
 	}
 
-	public ngOnInit(): void {
-		if(this.url)
-			this.image_service.setUrl(this.url);
-		this.getPictures();
-	}
 }

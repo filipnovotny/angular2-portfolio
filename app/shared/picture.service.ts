@@ -15,13 +15,15 @@ import { PictureCollection, PictureWithParent } from './picturecollection';
 @Injectable()
 export class PictureService {
   private picturesUrl : string;
+  private basePicturesUrl : string;
   private collection: PictureCollection;
   private resolved_collection: boolean = false;
   private ppics: Picture[];
   private obs_collection: Observable<PictureCollection> = null;
   private obs_collection_onetime: Observable<PictureCollection> = null;
+  private imageExtention : string = ".json"; 
   constructor(private http: Http,@Inject(APP_CONFIG) config: AppConfig) { 
-    this.picturesUrl  = config.url;
+    this.basePicturesUrl  = config.url; 
 
     this.obs_collection_onetime = Observable.create(observer => {
         if(this.resolved_collection){
@@ -40,7 +42,7 @@ export class PictureService {
   }
 
   public setUrl(url: string) : void{
-    this.picturesUrl = url;
+    this.picturesUrl = this.basePicturesUrl+url+this.imageExtention;
   }
 
   private retrievePictures() : void{
